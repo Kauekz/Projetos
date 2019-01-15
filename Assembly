@@ -1,0 +1,96 @@
+;       DADO UM NUMERO INTEIRO POSITIVO N
+;       CALCULE E IMPRIMA TODOS OS IMPARES 
+;       EXISTENTES ENTRE 0 E N, LIMITES INCLUSOS !!!            
+; Autor: Kaue  Turma PA 2018a
+; Data: 09/05/2018
+
+;          #ALGORITMO#                       
+
+;           [INICIO]                                
+;              |
+;             [PT 01ß]------------|
+;              |                  |
+;             [N]                NAO
+;              |                  |                         
+;           [N >= 0]--------------|
+;   SIM---- [PT02 ß]-------------[ N <- N - 1]-----------------|
+;              |                                               |
+;          [ N = 0 ]--NAO--[R<-RESTO (N/2)-----                |
+;              |                              |                |
+;              |                          [R=0]-----NAO-----[PRINT N] 
+;              |                            |            |     |
+;              |                   SIM---[PT03 ß]--------|     |
+;              |                            |------------------|
+;              |
+;            [FIM]
+
+;    MAPEAMENTO DE MEMORIA
+;     N IN         [DS:200h] 
+;     N OUT        [DS:300h] 
+
+; INICIO
+
+   
+    ORG 100h    ;   IP <= 100 em hexadecimal (Aponta para memoria principal (MP))
+   
+                         
+;ENTRADA DE DADOS    
+
+PTO1:                  
+                  
+    MOV BL,[200h]  ;    BL <- [DS:200h] <- N 
+    
+    CMP BL,00H     ;    COMPARAR AL C/ 0 //                     
+    
+    JAE PTO2       ;    SE BL FOR MAIOR OU IGUAL A ZERO ENTAO VA PARA PT02  
+    
+    JMP PTO1       ;    SE NAO PT01             
+                             
+;MONTAGEM DA ESTRUTURA DE REPETICAO
+
+PTO2:    
+    
+    CMP BL,00H     ;    COMPARA BL COM 0 
+    
+    JE  FIM        ;    BL FOR IGUAL A 0 VA PARA FIM
+    
+;SE NAO
+    
+    MOV AL,BL      ;    AL RECEBE BL
+    
+    MOV AH, 00H    ;    AH RECEBE 0  // EVITA LIXO !
+    
+    MOV CL,02H     ;    CL RECEBE 2
+    
+    DIV CL         ;    AL <- (AH:AL)/CL
+                   ;    AH <- RESTO
+                   
+;IMPLEMENTACAO FILTRO  
+    
+    CMP AH,00H
+    
+    JE PTO3  
+  
+;SE NAO
+    
+    MOV [300H],BL  ;    [DS:300H] <- BL // MP <- N  
+
+    
+PTO3:
+    
+    DEC BL         ;    DECREMENTA 1
+    
+    JMP PTO2       ;    BL <- BL-1 //N <- N-1
+                     
+FIM:  
+             
+
+    XOR AL,AL     ;AL <- XOR (AL,AL)
+                  ;AL <- 00h
+    XOR AH,AH     ;AH <- XOR (AH,AH)
+                  ;AH <- 00h
+    
+    
+    INT 21h       ;Interrupcao 21h 
+                  ;Finaliza via programa BIOS 
+                                         
