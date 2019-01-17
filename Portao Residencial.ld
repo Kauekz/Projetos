@@ -3,7 +3,7 @@ MICRO=Microchip PIC16F887 40-PDIP
 CYCLE=10000
 CRYSTAL=4000000
 BAUD=2400
-COMPILED=Y:\port„o RBA\Port„o.hex
+COMPILED=Y:\Port√£o.hex
 
 IO LIST
     XBotaoPulso at 0
