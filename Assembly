@@ -32,6 +32,8 @@
 
    
     ORG 100h    ;   IP <= 100 em hexadecimal (Aponta para memoria principal (MP))
+
+    MOV DI,300h ; ponteiro de escrita para a área de saída
    
                          
 ;ENTRADA DE DADOS    
@@ -73,7 +75,8 @@ PTO2:
   
 ;SE NAO
     
-    MOV [300H],BL  ;    [DS:300H] <- BL // MP <- N  
+    MOV [DI],BL    ; grava valor ímpar na área de saída
+    INC DI         ; avança ponteiro de saída
 
     
 PTO3:
